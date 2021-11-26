@@ -6,22 +6,22 @@ paper "[Representing Prior Knowledge Using Randomly, Weighted Feature Networks f
 
 ## Abstract
 
-The single-hidden-layer Randomly Weighted Feature Network (RWFN) introduced by Hong and Pavlic (2021) was developed as
-an alternative to neural tensor network approaches for relational learning tasks. Its relatively small footprint
-combined with the use of two randomized input projections -- an insect-brain-inspired input representation and random
-Fourier features -- allow it to achieve rich expressiveness for relational learning with relatively low training cost.
-In particular, when Hong and Pavlic compared RWFN to Logic Tensor Networks (LTNs) for Semantic Image Interpretation (
-SII) tasks to extract structured semantic descriptions from images, they showed that the RWFN integration of the two
-hidden, randomized representations better captures relationships among inputs with a faster training process even though
-it uses far fewer learnable parameters. In this paper, we use RWFNs to perform Visual Relationship Detection (VRD)
-tasks, which are more challenging SII tasks. A zero-shot learning approach is used with RWFN that can exploit
-similarities with other seen relationships and background knowledge -- expressed with logical constraints between
-subjects, relations, and objects -- to achieve the ability to predict triples that do not appear in the training set.
-The experiments on the Visual Relationship Dataset to compare the performance between RWFNs and LTNs, one of the leading
-Statistical Relational Learning frameworks, show that RWFNs outperform LTNs for the predicate-detection task while using
-fewer number of adaptable parameters (1:56 ratio). Furthermore, background knowledge represented by RWFNs can be used to
-alleviate the incompleteness of training sets even though the space complexity of RWFNs is much smaller than LTNs (1:27
-ratio).
+The single-hidden-layer Randomly Weighted Feature Network (RWFN) introduced
+by [Hong and Pavlic (2021)](https://arxiv.org/abs/2109.06663) was developed as an alternative to neural tensor network
+approaches for relational learning tasks. Its relatively small footprint combined with the use of two randomized input
+projections -- an insect-brain-inspired input representation and random Fourier features -- allow it to achieve rich
+expressiveness for relational learning with relatively low training cost. In particular, when Hong and Pavlic compared
+RWFN to Logic Tensor Networks (LTNs) for Semantic Image Interpretation (SII) tasks to extract structured semantic
+descriptions from images, they showed that the RWFN integration of the two hidden, randomized representations better
+captures relationships among inputs with a faster training process even though it uses far fewer learnable parameters.
+In this paper, we use RWFNs to perform Visual Relationship Detection (VRD) tasks, which are more challenging SII tasks.
+A zero-shot learning approach is used with RWFN that can exploit similarities with other seen relationships and
+background knowledge -- expressed with logical constraints between subjects, relations, and objects -- to achieve the
+ability to predict triples that do not appear in the training set. The experiments on the Visual Relationship Dataset to
+compare the performance between RWFNs and LTNs, one of the leading Statistical Relational Learning frameworks, show that
+RWFNs outperform LTNs for the predicate-detection task while using fewer number of adaptable parameters (1:56 ratio).
+Furthermore, background knowledge represented by RWFNs can be used to alleviate the incompleteness of training sets even
+though the space complexity of RWFNs is much smaller than LTNs (1:27 ratio).
 
 ## Requirements
 
