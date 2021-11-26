@@ -28,7 +28,7 @@ def train_op(loss, optimization_algorithm):
 def PR(tensor):
     global count
     np.set_printoptions(threshold=sys.maxsize)
-    return tf.Print(tensor, [tf.shape(tensor), tensor.name,tensor], summarize=200000)
+    return tf.Print(tensor, [tf.shape(tensor), tensor.name, tensor], summarize=200000)
 
 
 def disjunction_of_literals(literals, label="no_label"):
@@ -36,7 +36,7 @@ def disjunction_of_literals(literals, label="no_label"):
     literals_tensor = tf.concat(list_of_literal_tensors, 1)
     if default_tnorm == "product":
         print "default tnorm is product"
-        result = 1.0-tf.reduce_prod(1.0-literals_tensor, 1, keep_dims=True)
+        result = 1.0 - tf.reduce_prod(1.0 - literals_tensor, 1, keep_dims=True)
     if default_tnorm == "yager2":
         print "default tnorm is yager"
         result = tf.minimum(1.0, tf.sqrt(tf.reduce_sum(tf.square(literals_tensor), 1, keep_dims=True)))
@@ -56,7 +56,7 @@ def disjunction_of_literals(literals, label="no_label"):
     if default_aggregator == "gmean":
         print "data aggregator is gmean"
         return tf.exp(tf.multiply(tf.reduce_sum(tf.log(result), keep_dims=True),
-                             tf.math.reciprocal(tf.to_float(tf.size(result)))), name=label)
+                                  tf.math.reciprocal(tf.to_float(tf.size(result)))), name=label)
     if default_aggregator == "hmean":
         print "data aggregator is hmean"
         return tf.div(tf.to_float(tf.size(result)), tf.reduce_sum(tf.math.reciprocal(result), keep_dims=True))
@@ -73,12 +73,12 @@ def disjunction_of_literals(literals, label="no_label"):
 
 def smooth(parameters):
     norm_of_omega = tf.reduce_sum(tf.expand_dims(tf.concat([tf.expand_dims(tf.reduce_sum(tf.square(par)), 0)
-                                                               for par in parameters], 0), 1))
+                                                            for par in parameters], 0), 1))
     return tf.multiply(default_smooth_factor, norm_of_omega)
 
 
 class Domain:
-    def __init__(self,columns, dom_type="float", label=None):
+    def __init__(self, columns, dom_type="float", label=None):
         self.columns = columns
         self.label = label
         self.tensor = tf.placeholder(dom_type, shape=[None, self.columns], name=self.label)
@@ -98,7 +98,7 @@ class Domain_slice(Domain):
 
     def __init__(self, domain, begin_column, end_column):
         self.columns = end_column - begin_column
-        self.label = "projection of" + domain.label + "from column "+begin_column + " to column " + end_column
+        self.label = "projection of" + domain.label + "from column " + begin_column + " to column " + end_column
         self.tensor = tf.concat(tf.split(1, domain.columns, domain.tensor)[begin_column:end_column], 1)
         self.parameters = domain.parameters
 
@@ -114,10 +114,10 @@ class Function(Domain):
         else:
             self.M = tf.Variable(tf.random_normal([self.domain.columns,
                                                    self.range.columns]),
-                                 name="M_"+self.label)
+                                 name="M_" + self.label)
 
             self.n = tf.Variable(tf.random_normal([1, self.range.columns]),
-                                 name="n_"+self.label)
+                                 name="n_" + self.label)
             self.parameters = [self.n, self.M]
         if self.value:
             self.tensor = self.value
@@ -136,6 +136,7 @@ def generate_W(num_layers, num_features, num_glom_inputs=7):
 
 def generate_R(num_layers, num_features):
     return tf.random_normal([num_layers, num_features])
+
 
 def generate_Rb(num_layers):
     return tf.random_uniform(shape=[1, num_layers], minval=0, maxval=2 * np.pi)
@@ -174,12 +175,10 @@ class Predicate:
                                  trainable=False)
 
         # Decoder
-        self.beta = tf.Variable(tf.random_normal([2*self.number_of_layers, 1]),
+        self.beta = tf.Variable(tf.random_normal([2 * self.number_of_layers, 1]),
                                 dtype=np.float32,
                                 name="rwfn_beta_" + label)
-        # self.parameters = [self.W, self.V, self.b, self.u]
         self.parameters = [self.W, self.R, self.b, self.beta]
-
 
     def tensor(self, domain=None):
         if self.defined is not None:
@@ -201,8 +200,6 @@ class Predicate:
         H2 = 1 / np.sqrt(self.number_of_layers) * np.sqrt(2) * tf.math.cos(tr)
 
         # Final feature representation
-        # H = H1
-        # H = H2
         H = tf.concat([H1, H2], axis=1)
         betaH = tf.matmul(tf.tanh(H), self.beta)
         return tf.sigmoid(betaH)
@@ -223,9 +220,9 @@ class Literal:
                 y = tf.equal(predicate.tensor(domain), 0.0)
                 self.tensor = tf.cast(y, tf.float32)
             if default_tnorm == "yager2":
-                self.tensor = 1-predicate.tensor(domain)
+                self.tensor = 1 - predicate.tensor(domain)
             if default_tnorm == "luk":
-                self.tensor = 1-predicate.tensor(domain)
+                self.tensor = 1 - predicate.tensor(domain)
 
         self.parameters = predicate.parameters + domain.parameters
 
@@ -259,11 +256,13 @@ class KnowledgeBase:
                 self.tensor = tf.reduce_mean(clauses_value_tensor)
             if default_clauses_aggregator == "hmean":
                 print "clauses aggregator is hmean"
-                self.tensor = tf.div(tf.to_float(tf.size(clauses_value_tensor)), tf.reduce_sum(tf.math.reciprocal(clauses_value_tensor), keep_dims=True))
+                self.tensor = tf.div(tf.to_float(tf.size(clauses_value_tensor)),
+                                     tf.reduce_sum(tf.math.reciprocal(clauses_value_tensor), keep_dims=True))
             if default_clauses_aggregator == "wmean":
                 print "clauses aggregator is weighted mean"
                 weights_tensor = tf.constant([cl.weight for cl in clauses])
-                self.tensor = tf.div(tf.reduce_sum(tf.multiply(weights_tensor, clauses_value_tensor)), tf.reduce_sum(weights_tensor))
+                self.tensor = tf.div(tf.reduce_sum(tf.multiply(weights_tensor, clauses_value_tensor)),
+                                     tf.reduce_sum(weights_tensor))
         if default_positive_fact_penality != 0:
             self.loss = smooth(self.parameters) + \
                         tf.multiply(default_positive_fact_penality, self.penalize_positive_facts()) - \
@@ -276,11 +275,12 @@ class KnowledgeBase:
         print "knowledge base", label, "is defined"
 
     def penalize_positive_facts(self):
-        tensor_for_positive_facts = [tf.reduce_sum(Literal(True, lit.predicate, lit.domain).tensor, keep_dims=True) for cl in self.clauses for lit in cl.literals]
+        tensor_for_positive_facts = [tf.reduce_sum(Literal(True, lit.predicate, lit.domain).tensor, keep_dims=True) for
+                                     cl in self.clauses for lit in cl.literals]
         return tf.reduce_sum(tf.concat(tensor_for_positive_facts, 0))
 
     def save(self, sess, version=""):
-        save_path = self.saver.save(sess, self.save_path + self.label+version+".ckpt")
+        save_path = self.saver.save(sess, self.save_path + self.label + version + ".ckpt")
 
     def restore(self, sess):
         ckpt = tf.train.get_checkpoint_state(self.save_path)
