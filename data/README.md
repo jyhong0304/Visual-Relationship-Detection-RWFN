@@ -1,0 +1,2 @@
+## The LTNs/RWFNs Encoding of the Visual Relationship Dataset
+Please check the ```README.md``` in the ```data``` folder of [the original Git repository for LTNs](https://github.com/ivanDonadello/Visual-Relationship-Detection-LTN/tree/master/data).
