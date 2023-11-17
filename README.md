@@ -67,3 +67,15 @@ Then, launch Matlab, move into the ```Visual-Relationship-Detection-master``` fo
 ## Contributing
 
 All content in this repository is licensed under the MIT license.
+
+## Reference
+
+You can cite our work:
+```
+@inproceedings{hong2022representing,
+  title={Representing Prior Knowledge Using Randomly, Weighted Feature Networks for Visual Relationship Detection},
+  author={Hong, Jinyung and Pavlic, Ted},
+  booktitle={The First International Workshop on Combining Learning and Reasoning: Programming Languages, Formalisms, and Representations~(CLeaR) at the AAAI Conference on Artificial Intelligence},
+  year={2022}
+}
+```
